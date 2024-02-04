@@ -3,14 +3,14 @@ package solution;
 public class Solution {
 
 	public static void main(String[] args) {
-		CurvingArray sol = new CurvingArray();
-		int[] arr = {0, 1, 2, 3, 4, 5};
-		int[] query = {4, 1, 2};
-		int[] answer = sol.solution(arr, query);
-		
-//		for(int i=0; i<answer.length; i++)
-//			System.out.print(i + ", ");
-		
+		SpiralArr sa = new SpiralArr();
+		int n = 5;
+		int[][] res = sa.solution(n);
+		for(int i = 0; i < n; i++) {
+			for(int j = 0; j < n; j++)
+				System.out.print(res[i][j] + " ");
+			System.out.println();
+		}
 	}
 
 }

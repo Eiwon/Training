@@ -7,28 +7,20 @@ package solution;
 
 public class CalcFraction {
 	public int[] solution(int numer1, int denom1, int numer2, int denom2) {
-        int[] answer = new int[2];
-        int d1 = denom1, d2 = denom2;
-        int lcm = 1;
-        //분모의 최소 공배수 구하기
+		int[] answer = new int[2];
+        int numer3 = numer1*denom2 + numer2*denom1;
+        int denom3 = denom1*denom2;
         
-        // 두 수를 2~n까지 나누었을때, 동시에 나머지가 0이면,
-        // lcm *= 나눈 값, denom12 /= 나눈 값
-        // 나눌 수 있는 값을 못 찾으면, lcm *= 남은 두 값 
-        
-        for(int n=2; n <= d1; n++) {
-        	if(d1 % n == 0 && d2 % n == 0) {
-        		lcm *= n;
-        		d1 /= n;
-        		d2 /= n;
+        for(int n=2; n <= denom3; n++) {
+        	if((denom3 % n == 0) && (numer3 % n == 0)) {
+        		denom3 /= n;
+        		numer3 /= n;
         		n = 1;
         	}
         }
-        lcm = lcm * d1 * d2;
         
-        answer[0] = numer1 *(lcm / denom1) + numer2 *(lcm / denom2);
-        answer[1] = lcm;
-        
+        answer[0] = numer3;
+        answer[1] = denom3;
         return answer;
     }
 }
