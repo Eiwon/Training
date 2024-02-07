@@ -10,7 +10,10 @@ public class Knapsack {
 	        //return answer;
 	        /*		                         쏠 수 있는 화살 수
 	        (물건 가치, 무게 = 점수, 필요 발수) 1  2  3  4  5  6  7  8
-	        							 
-	        */
+	        							 */
+	        
+	        
+	        
+	        return answer;
 	    }
 }
