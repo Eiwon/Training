@@ -31,16 +31,16 @@ public class IdRecommend {
         		c = Character.toLowerCase(c);
         	}
         	if(pattern.matcher(Character.toString(c)).matches()) {//2. 특정 문자만 남기기
-        		if(!(c == '.' && (id.isEmpty() || id.charAt(id.length()-1) == '.'))) {
+        		if(!(c == '.' && (id.length() == 0 || id.charAt(id.length()-1) == '.'))) {
         		   id.append(c);
         		}
         	}
         }
         
-        if(!id.isEmpty() && id.charAt(id.length()-1) == '.')// 4. 마지막 자리의 . 제거
+        if(!(id.length() == 0) && id.charAt(id.length()-1) == '.')// 4. 마지막 자리의 . 제거
         	id.deleteCharAt(id.length()-1);
         
-        if(id.isEmpty()) // 5. 비었으면 a 추가
+        if(id.length() == 0) // 5. 비었으면 a 추가
         	id.append('a');
         else if(id.length() > 15) {// 6. 16자 이상 컷
         	id.delete(15, id.length());
