@@ -35,7 +35,7 @@ public class MultiLCM {
 	}
 	
 	public static int lcm(int a, int b) {
-		return a * b / gcl(a, b);
+		return a / gcl(a, b)* b ;
 	}
 	
 	public static int gcl(int a, int b) {
