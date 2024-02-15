@@ -11,30 +11,53 @@ import java.util.*;
 public class MaxDiscount {
 
 	public static void main(String[] args) {
-		solution(new String[] {"banana", "apple", "rice", "pork", "pot"}, 
-				new int[] {3, 2, 2, 2, 1}, 
-				new String[] {"chicken", "apple", "apple", "banana", "rice", "apple", "pork", "banana", "pork", "rice", "pot", "banana", "apple", "banana"});
+		solution(new String[] {"apple"}, 
+				new int[] {10}, 
+				new String[] {"banana", "banana", "banana", "banana", "banana", "banana", "banana", "banana", "banana", "banana"});
 
 	}
-
+	//discount 순회
+    // want에 없는 단어 나오면 초기화(replaceAll)
+    // 있는 단어 나왔는데 number보다 커지면, 작아질 때까지 다음 단어 탐색
+    // 초기화 상태면 다음 10개의 단어 저장
+    // 
 	public static int solution(String[] want, int[] number, String[] discount) {
         int answer = 0;
         HashMap<String, Integer> plan = new HashMap<>();
+        int planNum = 0;
         String word = "";
-        for(int i=0; i<discount.length-10; i++) {
-        	word = discount[i];
-        	if(plan.size() < 10) {
-        		if(plan.containsKey(word)) {
-        			plan.put(word, plan.get(word)+1);
-        		}else {
-        			plan.put(word, 1);
-        		}
-        	}else {
-        		//check
-        	}
+        
+        for(String w : want) {
+        	plan.put(w, 0);
         }
         
+        for(int i=0; i<discount.length; i++) {
+        	word = discount[i];
+        	
+        	if(plan.containsKey(word)) {
+        		if(planNum < 10) {
+        			planNum++;
+        		}else {
+        			plan.put(discount[i-10], plan.get(discount[i-10]) -1);
+        		}
+        		plan.put(word, plan.get(word)+1);
+        	}else {
+        		planNum = 0;
+        		plan.forEach((key, value) -> plan.put(key, 0));
+        	}
+        	if(planNum == 10 && check(want, number, plan)) {
+        		answer++;
+        	}
+        	System.out.println(plan.toString());
+        }
         
         return answer;
     }
+	private static boolean check(String[] want, int[] number, HashMap<String, Integer> plan) {
+		for(int i=0; i<want.length; i++) {
+			if(plan.get(want[i]) != number[i])
+				return false;
+		}
+		return true;
+	}
 }
