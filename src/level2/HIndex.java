@@ -10,16 +10,21 @@ import java.util.*;
 public class HIndex {
 
 	public static void main(String[] args) {
-		solution(new int[] {3, 0, 6, 1, 5});
+		solution(new int[] {1, 2, 2, 7, 7, 7, 7, 15, 18});
 	}// 1 2 2 9 10 10 10 10 15 18 -> 7
 	
 	public static int solution(int[] citations) {
         int answer = 0;
         int n = citations.length;
+        
         Arrays.sort(citations);
         
         for(int i=0; i<n; i++) {
-        	
+        	if(citations[n-i-1] <= answer) {
+        		System.out.println(answer);
+        		break;
+        	}
+        	answer = i+1;
         }
         
         return answer;
