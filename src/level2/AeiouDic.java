@@ -10,8 +10,10 @@ package level2;
 
 public class AeiouDic {
 
+	private static int count = 0; 
+	
 	public static void main(String[] args) {
-		solution("AAAE");
+		solution("EIO");
 
 	}
 	
@@ -19,29 +21,30 @@ public class AeiouDic {
         int answer = 0;
         String maked = "";
         // 재귀함수로 a~u 탐색
-        answer = search(word, maked, 0);
-        System.out.println(answer);
+        answer = search(word, maked);
+        System.out.println(count);
         
         return answer;
     }
 	
-	public static int search(String word, String maked, int depth) {
+	public static int search(String word, String maked) {
 		char[] set = {'A', 'E', 'I', 'O', 'U'};
 		String mk = maked;
 		int result = 0;
-		System.out.println(maked + " " + depth);
-		if(maked.length() == 5)
-			return 0;
+		System.out.println(maked + " " + count);
 		
 		if(word.equals(maked)) {//종료 조건
-			return depth;
+			return 1;
 		}
-		
+		count++;
+		if(maked.length() == 5)
+			return 0;
 
 		// 반복
-		depth++;
+		
 		for(int i = 0; i < set.length; i++) {
-			result = search(word, mk +set[i], depth);
+			
+			result = search(word, mk +set[i]);
 			if(result != 0) {
 				return result;
 			}
