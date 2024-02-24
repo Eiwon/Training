@@ -16,41 +16,40 @@ public class UpDown {
 
 	public static void main(String[] args) {
 		solution(new int[] {1, 2, 3, 4, 5, 4, 3, 2, 3, 4, 5, 6});
-	}
+	}					  //11 10  5  3  1  1  1  4  3  2  1  0
 	
 	public static int[] solution(int[] prices) {
         int[] answer = new int[prices.length];
-        // for n-1~0 : if(stack.peek >= prices[i]) stack.add prices[i], answer[i] = second++;
-        // if(stack.peek < prices[i]) second = 1, prices[i] = second++
-        // 값이 작아지면 더 작은 값이 나올 때까지 stack pop, second++,
-        // 값이 커지면 second 1로 초기화, stack에 add
-        Stack<Integer> stack = new Stack<>();
+        // 값이 작아지면 더 작은 값이 나올 때까지 stack pop, (자신 값+1+pop 횟수) 부여
+        // 값이 커지면 second 1로 초기화, stack에 push
+        Stack<Map.Entry<Integer, Integer>> stack = new Stack<>();
+        stack.push(Map.entry(prices[prices.length-1], prices.length-1));
+        answer[prices.length -1] = 0;
+        int pick = 0;
         
-        stack.add(prices[prices.length-1]);
-        prices[prices.length-1] = 0;
-        int num = 0, second = 0;
-        // stack 
-        // sec   1
-        // ans   0 1
         for(int i = prices.length -2; i >= 0; i--) {
-        	num = prices[i];
-        	// 
-        	if(stack.peek() > num) {
-        		while(true) { //스택이 비었거나 다음 값이 더 작으면 종료
-        			if(stack.size() ==0 || stack.peek() < num)
+        	pick = prices[i];
+        	
+        	if(prices[i+1] >= pick) {
+        		while(true) {
+        			if(stack.size() == 0) {
+        				answer[i] = prices.length -1 - i;
         				break;
+        			}
+        			if(stack.peek().getKey() < pick) {
+        				answer[i] = stack.peek().getValue() -i;
+        				break;
+        			}
         			stack.pop();
-        			second++;
+        			answer[i]++;
         		}
-        		answer[i] = second;
-        		stack.push(num);
         	}else {
-        		second = 1;
-        		answer[i] = second++;
-        		stack.push(num);
+        		answer[i] = 1;
         	}
+        	stack.push(Map.entry(pick, i));
         	
         }
+       
         for(int i : answer)
         	System.out.print(i + " ");
         
