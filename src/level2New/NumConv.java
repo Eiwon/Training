@@ -10,6 +10,7 @@
 //1 ≤ n < y
 
 package level2New;
+import java.util.*;
 
 public class NumConv {
 
@@ -18,44 +19,35 @@ public class NumConv {
 		solution(2, 5, 4);
 
 	}
-
+//너비우선탐색
 	public static int solution(int x, int y, int n) {
         int answer = 0;
-        if(x == y) return 0;
-        answer = conversion(x, y, n, 0);
-        if(answer == 0)
-        	return -1;
+        
+        Queue<Map.Entry<Integer, Integer>> wSearch = new LinkedList<>();
+        
+        wSearch.add(Map.entry(x, 0));
+        Map.Entry<Integer, Integer> pick;
+        
+        while(true) {
+        	pick = wSearch.poll();
+        	if(pick.getKey() == y) {
+        		answer = pick.getValue();
+        		break;
+        	}else if(pick.getKey() < y) {
+        		wSearch.add(Map.entry(pick.getKey() * 3, pick.getValue() + 1));
+        		wSearch.add(Map.entry(pick.getKey() * 2, pick.getValue() + 1));
+        		wSearch.add(Map.entry(pick.getKey() + n, pick.getValue() + 1));
+        	}
+        	if(wSearch.size() == 0) {
+        		answer = -1;
+        		break;
+        	}
+        }
+        System.out.println(answer);
         
         return answer;
     }
 	
-	public static int conversion(int x, int y, int n, int depth) {
-		// 종료 조건 : x가 y보다 클때, x==y일때
-		int result = 0;
-		int[] res = new int[3];
-		if(depth > minDepth)
-			return 0;
-		if(x > y)
-			return 0;
-		else if(x == y) {
-			minDepth = Math.min(depth, minDepth);
-			return depth;
-		}
-			
-		else {
-			// 3가지 연산 후 1이상이 반환된 값이 있다면 그 값을 return
-			res[0] = conversion(x * 3, y, n, depth+1);
-			res[2] = conversion(x * 2, y, n, depth+1);
-			res[1] = conversion(x + n, y, n, depth+1);
-		}
-		for(int r : res) {
-			if(r > 0) {
-				if(result == 0)
-					result = r;
-				else result = Math.min(result, r);
-			}
-		}
-		return result;
-	}
+	
 	
 }
