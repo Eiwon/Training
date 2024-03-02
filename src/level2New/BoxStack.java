@@ -6,7 +6,7 @@ public class BoxStack {
 //	[4, 3, 1, 2, 5]	2    34215
 //	[5, 4, 3, 2, 1]	5
 	public static void main(String[] args) {
-		solution(new int[] {6, 4, 2, 1, 3, 5});
+		solution(new int[] {4, 3, 1, 2, 5});
 	}
 	public static int solution(int[] order) {
         int answer = 1;
@@ -19,6 +19,10 @@ public class BoxStack {
         	nOrder[order[i]-1] = i;
         }
         
+        for(int i : nOrder) {
+        	System.out.print(i + " ");
+        }
+        System.out.println();
        	boolean start = false;
         for(int i : nOrder) {
         	if(i == 0) {
@@ -28,7 +32,8 @@ public class BoxStack {
         		subConv.push(i);
         	}else mainConv.add(i);
         }
-        
+        System.out.println(subConv.toString());
+        System.out.println(mainConv.toString());
         while(true) {
         	if(subConv.size() == 0 || mainConv.size() == 0) {
         		return order.length;
@@ -41,7 +46,7 @@ public class BoxStack {
         		nextBox = mainConv.poll() +1;
         	}else break;
         }
-        System.out.println(answer);
+//        System.out.println(answer);
         
         return answer;
     }
