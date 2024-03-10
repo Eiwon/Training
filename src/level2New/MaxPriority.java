@@ -8,7 +8,6 @@ public class MaxPriority {
 	public static long solution(String expression) {
         long answer = 0;
         char[] priority = {'+', '-', '*'};
-        // +-* -+* -*+ *-+ *+- +*-
         
         String[] num = expression.split("[+-\\*]");
         int[] numbers = new int[num.length];
