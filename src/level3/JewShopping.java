@@ -28,29 +28,28 @@ public class JewShopping {
         	gemType.add(str);
         }
         typeNum = gemType.size();
-        HashMap<String, Integer> bigestIdx = new HashMap<>();
-        ArrayList<Integer> list = new ArrayList<>();
-        //Deque<Gem> purchase = new LinkedList<>();
+        HashMap<String, Integer> lastIdx = new HashMap<>();
+        Queue<Gem> list = new LinkedList<>();
+      
         for(int i = 0; i < gems.length; i++) {
-        	if(bigestIdx.containsKey(gems[i])) {
-        		start = Math.min(start, i);
-        		end = Math.max(start, i);
+        	lastIdx.put(gems[i], i);
+        	list.add(new Gem(i, gems[i]));
+        	while(lastIdx.get(list.peek().name) != list.peek().idx) {
+        		list.poll();
         	}
-        	if(bigestIdx.size() == 0)
-        		start = i;
-        	bigestIdx.put(gems[i], i);
-        	end = i;
-        	///"DIA", "RUBY", "RUBY", "DIA", "DIA", "EMERALD", "SAPPHIRE", "DIA"
-        	if(bigestIdx.size() == typeNum) {
-        		System.out.println(bigestIdx.toString());
-        		System.out.println(start + " " + end);
+        	for(Gem g : list) {
+        		System.out.print(g.name.toString() + " ");
+        	}
+        	System.out.println();
+        	if(lastIdx.size() == typeNum) {
+        		start = list.peek().idx;
+        		end = i;
         		if(minLen > end - start) {
         			minLen = end - start;
         			answer[0] = start +1;
         			answer[1] = end +1;
         		}
         	}
-        	
         }
         System.out.println(answer[0] + " " + answer[1]);
         
@@ -65,12 +64,11 @@ public class JewShopping {
 	
 	
 }
-class Jem {
+class Gem {
 	int idx;
 	String name;
 	
-	public Jem(int idx, String name) {
-		super();
+	public Gem(int idx, String name) {
 		this.idx = idx;
 		this.name = name;
 	}
