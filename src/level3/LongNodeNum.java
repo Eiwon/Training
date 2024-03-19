@@ -56,9 +56,10 @@ public class LongNodeNum {
         	}
         }
         for(int i=1; i<n+1; i++) {
-        	System.out.println(graph[i].distance);
+        	if(graph[i].distance == max)
+        		answer++;
         }
-        
+        //System.out.println(answer);
         return answer;
     }
 }
