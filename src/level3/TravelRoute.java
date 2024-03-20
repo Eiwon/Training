@@ -14,6 +14,9 @@ import java.util.*;
 public class TravelRoute {
 //[["ICN", "SFO"], ["ICN", "ATL"], ["SFO", "ATL"], ["ATL", "ICN"], ["ATL","SFO"]]	
 	//["ICN", "ATL", "ICN", "SFO", "ATL", "SFO"]
+	static HashMap<String, Integer> portToIdx;
+	static List<List<Edge>> portMap;
+	static Stack<String> route;
 	public static void main(String[] args) {
 		solution(new String[][] {{"ICN", "SFO"}, {"ICN", "ATL"}, {"SFO", "ATL"},
 			{"ATL", "ICN"}, {"ATL","SFO"}});
@@ -21,43 +24,62 @@ public class TravelRoute {
 	}
 	public static String[] solution(String[][] tickets) {
         String[] answer = {};
+        // 시작점과 끝점, 사용 여부가 담긴 edge 생성
+        // edge를 시작점별로 분류
+        // 각 시작점의 edge를 끝점 이름 기준으로 정렬
+        // ICN을 시작으로 DFS, 지나간 지점은 stack에 저장, 
         int edgeNum = tickets.length;
-        List<Node> graph = new ArrayList<>();
-        HashMap<String, Integer> portMap = new HashMap<>();
+        portToIdx = new HashMap<>();
+        portMap = new ArrayList<>();
+        route = new Stack<>();
         int portNum = 0;
-        String start, end;
+        String[] ticket;
         for(int i=0; i < tickets.length; i++) {
-        	start = tickets[i][0];
-        	end = tickets[i][1];
-        	if(!portMap.containsKey(start)) {
-        		portMap.put(start, portNum++);
-        		graph.add(new Node(start));
+        	ticket = tickets[i];
+        	for(int j=0; j<ticket.length; j++) {
+        		if(!portToIdx.containsKey(ticket[j])) {
+        			portToIdx.put(ticket[j], portNum++);
+        			portMap.add(new ArrayList<>());
+        		}
         	}
-        	if(!portMap.containsKey(end)) {
-        		portMap.put(end, portNum++);
-        		graph.add(new Node(end));
-        	}
-        	graph.get(portMap.get(start)).addNode(portMap.get(end));
+        	portMap.get(portToIdx.get(ticket[0])).add(new Edge(ticket[1]));
         }
-        
-        
-        
+        for(List<Edge> port : portMap) {
+        	Collections.sort(port, (e1, e2) -> (e1.next.compareTo(e2.next)));
+        }
+        dfs("ICN", edgeNum);
+        answer = route.toArray(answer);
         return answer;
     }
-}
-class Node{
-	String name;
-	List<Integer> next;
-	List<Boolean> isUsed;
 	
-	public Node(String name) {
-		this.name = name;
-		next = new ArrayList<>();
-		isUsed = new ArrayList<>();
-	}
-	
-	public void addNode(int nodeIdx) {
-		next.add(nodeIdx);
-		isUsed.add(false);
+	public static int dfs(String port, int edgeNum) {
+		int targetIdx = portToIdx.get(port);
+		// 스택에 해당 port 추가
+		route.add(port);
+		if(route.size() == edgeNum +1)
+			return 1;
+		//System.out.println(route.toString());
+		if(portMap.get(targetIdx).size() > 0) {
+			for(Edge edge : portMap.get(targetIdx)) {
+				if(edge.isUsed == false) {
+					edge.isUsed = true;
+					// 사용됨으로 체크 후 dfs
+					if(dfs(edge.next, edgeNum) == 1)
+						return 1;
+					edge.isUsed = false;
+				}
+			}
+		}
+		route.pop();
+		return 0;
 	}
 }
+class Edge{
+	boolean isUsed;
+	String next;
+	
+	public Edge(String next) {
+		this.next = next;
+	}
+}
+
