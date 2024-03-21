@@ -21,24 +21,27 @@ public class DiskControl {
         // 작업이 끝나면 pq에서 작업을 꺼내 실행
         PriorityQueue<Job> waitQ = new PriorityQueue<>((j1, j2) -> (j1.reqTime - j2.reqTime));
         PriorityQueue<Job> scheduler = new PriorityQueue<>((j1, j2) -> (j1.workTime - j2.workTime));
-        scheduler.add(new Job(jobs[0]));
+        //scheduler.add(new Job(jobs[0]));
         int second = 0;
         Job job;
-        for(int i= 1; i < jobs.length; i++) {
+        for(int i= 0; i < jobs.length; i++) {
         	waitQ.add(new Job(jobs[i]));
         }
+        while(waitQ.size() > 0 && waitQ.peek().reqTime <= second) {
+			scheduler.add(waitQ.poll());
+		}
         while(waitQ.size() > 0 || scheduler.size() > 0) {
+        	while(waitQ.size() > 0 && waitQ.peek().reqTime <= second) {
+    			scheduler.add(waitQ.poll());
+    		}
         	if(scheduler.size() > 0 && second >= scheduler.peek().reqTime) {
+        		// 수행가능한 작업이 있으면 1개 꺼내서 처리
         		job = scheduler.poll();
         		answer += second + job.workTime - job.reqTime;
         		second += job.workTime;
         	}else {
         		second++;
-        	}
-        	while(waitQ.size() > 0 && waitQ.peek().reqTime <= second) {
-    			scheduler.add(waitQ.poll());
-    		}
-        	System.out.println("second : " + second + "  " + scheduler.toString());
+        	} // 수행 가능한 작업이 없으면 시간 ++
         }
         System.out.println(answer / jobs.length);
         return answer;
