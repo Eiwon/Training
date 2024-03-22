@@ -13,41 +13,43 @@ import java.util.*;
 public class CheckIn {
 //6	[7, 10]	28
 	public static void main(String[] args) {
-		solution(6, new int[] {7, 10});
+		solution(6, new int[] {7, 10, 15, 20});
 	}
 	public static long solution(int n, int[] times) {
         long answer = 0;
-        /* 7 10 14 20 21 28 30
-         * 우선순위 큐로 times를 내림차순 정렬
-         * 꺼낸 값은 다음 시간을 계산해서 다시 큐에 add
-         * */
-        int guestNum = 0;
-        PriorityQueue<Counter> endTime = new PriorityQueue<>((c1, c2) -> ((c1.curEndTime - c2.curEndTime) > 0 ? 1 : -1));
-        
-        for(int t : times) {
-        	endTime.add(new Counter(t));
-        }
-        while(guestNum < n) {
-        	Counter pick = endTime.poll();
-        	if(guestNum == n-1) {
-        		return pick.curEndTime;
+        // 7 10 14 20 21 28 30 35 40 42
+        // n이 정답이 될 수 있는 시간인지 확인하는 법 =
+        // = times[i]의 원소 중 나누어떨어지는 값이 있어야함+
+        // 각 원소로 나눈 몫의 합이 n보다 큰 수 중 최솟값
+        // 26 27 28
+        Arrays.sort(times);
+        long curMinTime = (long)times[0] *n;
+        long minTime = 0;
+        long center = 0;
+        long expected;
+        while(true) {
+        	System.out.println("-------------");
+        	center = (curMinTime + minTime) /2;
+        	System.out.println("center : " + center);
+        	expected = 0;
+        	for(int t : times) {
+        		expected += center / t;
         	}
-        	pick.curEndTime += pick.duration;
-        	endTime.add(pick);
-        	guestNum++;
-        	
+        	System.out.println("expected : " + expected);
+        	if(expected < n) {
+        		minTime = center +1;
+        	}else {
+        		curMinTime = center;
+        	}
+        	System.out.println(minTime + " ~ " + curMinTime);
+        	if(curMinTime == minTime) {
+        		answer = curMinTime;
+        		break;
+        	}
         }
         
         System.out.println(answer);
         return answer;
     }
 }
-class Counter{
-	long curEndTime;
-	int duration;
-	
-	public Counter(int duration) {
-		this.duration = duration;
-		curEndTime = duration;
-	}
-}
+
