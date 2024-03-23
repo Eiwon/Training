@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Membership Join</title>
+</head>
+<body>
+	<div>
+		<form autocomplete="off" id="joinForm">
+			
+			<label for="userId"> ID </label>
+			<input type="text" id="userId" autofocus="autofocus" onblur="checkId(this)">
+			<div></div>
+			
+			<label for="password"> 비밀번호 </label>
+			<input type="password" id="password" onblur="checkPw(this)">
+			<div></div>
+			
+			<label for="passwordChk"> 비밀번호 재입력 </label>
+			<input type="password" id="passwordChk">
+			<div></div>
+			
+			<label for="userName"> 이름 </label>
+			<input type="text" id="userName">
+			<div></div>
+			
+			<label for="phone"> 전화번호 </label>
+			<input type="tel" id="phone">
+			<div></div>
+			
+			<label for="email"> 이메일 </label>
+			<input type="tel" id="email">
+			<div></div>
+			
+			<label for="birth"> 생년월일 </label>
+			<input type="date" id="birth">
+			<div></div>
+		</form>
+		<input type="button" value="등록">
+	</div>
+	
+	<script type="text/javascript">
+		
+		let joinForm = document.getElementById('joinForm').children;
+		let pw = document.getElementById('password');
+		let rePw = document.getElementById('passwordChk');
+		let validChk = {};
+		
+		for(let i = 0; i < joinForm.length; i++){
+			if(joinForm[i].tagName == 'INPUT'){
+				joinForm[i].addEventListener('blur', function() {
+					lengthCheck(this);
+				});
+			}
+		}
+		pw.addEventListener('blur', checkRepw);		
+		rePw.addEventListener('blur', checkRepw);
+		
+		function checkId(input){
+			if(input.value.length > 4 && input.value.length < 21){
+				input.nextElementSibling.innerHTML = '멋진 아이디군요<br>';
+				validChk[input.id] = true;
+			}else if(input.value.length > 0){
+				input.nextElementSibling.innerHTML = '아이디는 5~20자<br>';
+				validChk[input.id] = false;
+			}
+			console.log(validChk[input.id]);
+		}
+	
+		function checkPw(input){
+			if(input.value.length > 4 && input.value.length < 21){
+				input.nextElementSibling.innerHTML = '유효한 비밀번호<br>';
+				validChk[input.id] = true;
+			}else if(input.value.length > 0){
+				input.nextElementSibling.innerHTML = '비밀번호는 5~20자<br>';
+				validChk[input.id] = false;
+			}
+		}
+		
+		function checkRepw(){
+			if(pw.value == rePw.value){
+				rePw.nextElementSibling.innerHTML = '비밀번호 일치<br>';
+			}else{
+				rePw.nextElementSibling.innerHTML = '비밀번호 불일치<br>';
+			}
+		}
+			
+		function lengthCheck(input){
+			if(input.value.length == 0){
+				input.nextElementSibling.innerHTML = '입력 필수 항목<br>';
+				validChk[input.id] = false;
+				return;
+			}
+			validChk[input.id] = true;
+		}
+	
+	
+	
+	
+	</script>
+	
+</body>
+</html>

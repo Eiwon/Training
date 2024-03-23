@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div>
+		<form autocomplete="off">
+			<fieldset>
+				<legend> 상품 선택 </legend>
+				<ul>
+					<li>
+						<label for="userId"> ID </label> 
+						<input type="text" id="userId" size="10" autofocus="autofocus">
+					</li>
+					<li>
+						<label for="password"> Password </label> 
+						<input type="password" id="password">
+					</li>
+					<li> 
+						<label for="userName"> Name </label> 
+						<input type="text" id="userName"> 
+					</li>
+					<li> 
+						<label for="tel"> Tel </label> 
+						<input type="tel" id="tel" placeholder="숫자만 입력">
+					</li>
+					<li>
+						<label for="email"> Email</label> 
+						<input type="email" id="email">
+					</li>
+					<li>
+						<label for="birth"> Birth </label> 
+						<input type="date" id="birth">
+					</li>
+					<li>
+						<label> Gender </label> 
+						<label>남 <input type="radio" name="genderSel" value="Male"> </label> 
+						<label>여 <input type="radio" name="genderSel" value="Female"> </label>
+					</li>
+				</ul>
+			</fieldset>
+		<input type="button" onclick="calcAge()" value="제출">
+		<fieldset>
+		
+		</fieldset>
+	
+		</form>
+	</div>
+	
+	<script type="text/javascript">
+		let birth = document.getElementById('birth');
+		
+		function calcAge(){
+			console.log(birth.value);	
+		}
+	
+		
+	
+	</script>
+	
+</body>
+</html>
