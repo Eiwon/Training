@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<form id="info">
+		<label>ID</label>
+		<input type="text" id="uid" onblur="isValidId(this)">
+		<div></div>
+		<label>비밀번호</label>
+		<input type="password" id="pw" onblur="isValidPw(this)">
+		<div></div>
+		<label>비밀번호 확인</label>
+		<input type="password" id="pwCheck">
+		<div></div>
+		<label>이름</label>
+		<input type="text" id="name">
+		<div></div>
+		<label>생년월일</label>
+		<input type="date" id="birth">
+		<div></div>
+		<label>이메일</label>
+		<input type="email" id="email">
+		<div></div>
+	</form>
+	<button onclick="join()">가입하기</button>
+	
+	<script type="text/javascript">
+	let info = document.getElementById('info').children;
+	let valid = {};
+	let pw = document.getElementById('pw');
+	let pwCheck = document.getElementById('pwCheck');
+	
+	for(let i = 0; i < info.length; i++){
+		if(info[i].tagName == 'INPUT'){
+			info[i].addEventListener('blur', function(){
+				emptyCheck(this);
+			});
+			valid[info[i].id] = false;
+		}
+	} // 모든 element에, 입력값이 있는지 확인하는 함수 등록
+	
+	pw.addEventListener('blur', comparePw);
+	pwCheck.addEventListener('blur', comparePw);
+	// 비밀번호 일치 확인 함수 등록
+	
+	function isValidId(input){
+		console.log('idCheck');
+		if(input.value == "test1"){
+			input.nextElementSibling.innerHTML = "이미 사용 중이거나 탈퇴한 아이디입니다.";
+			valid[input.id] = false;
+			return;
+		}
+		if(input.value.length > 4 && input.value.length < 21){
+			input.nextElementSibling.innerHTML = "멋진 아이디네요!";
+			valid[input.id] = true;
+		}else if(input.value.length > 0){
+			input.nextElementSibling.innerHTML = "아이디는 5~20자로 제한합니다.";
+			valid[input.id] = false;
+		}
+	} // end idCheck
+	
+	function isValidPw(input){
+		console.log('pwCheck');
+		if(input.value.length > 7 && input.value.length < 17){
+			input.nextElementSibling.innerHTML = "가능한 비밀번호";
+			valid[input.id] = true;
+		}else{
+			input.nextElementSibling.innerHTML = "사용할 수 없는 비밀번호";
+			valid[input.id] = false;
+		}
+	} // end pwCheck
+	
+	function emptyCheck(input){
+		console.log('emptyCheck');
+		if(input.value.length == 0){
+			input.nextElementSibling.innerHTML = '필수정보입니다';
+			valid[input.id] = false;
+		}
+	} // end emptyCheck
+
+	function comparePw(){
+		console.log('comparePw');
+		if(pw.value == pwCheck.value){
+			pwCheck.nextElementSibling.innerHTML = '비밀번호가 일치합니다.';
+			valid[pwCheck.id] = true;
+		}else{
+			pwCheck.nextElementSibling.innerHTML = '비밀번호가 일치하지 않습니다.';
+			valid[pwCheck.id] = false;
+		}
+	} // end comparePw
+	
+	function join(){
+		console.log('join');
+		for(x in valid){
+			if(x == false){
+				console.log(x);
+				break;
+			}
+		}
+		console.log('모든 원소 유효');
+		alert('가입 성공');
+	} // end join
+	
+	
+	</script>
+</body>
+</html>
