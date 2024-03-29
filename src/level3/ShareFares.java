@@ -25,14 +25,36 @@ public class ShareFares {
 	//[2, 3, 22], [1, 6, 25]]	82
 	public static int solution(int n, int s, int a, int b, int[][] fares) {
         // s에서 ? 지점까지의 최소비용 + ?에서 a까지, ?에서 b까지의 최소비용 합
-		// 모든 노드에 대해, 각 노드에 대한 최소비용 계산	
+		// 모든 노드에 대해, 각 노드에 대한 최소비용 계산	(다익스트라)
 		int answer = 0;
-		
+		int[][] map = new int[n+1][n+1];
+		Road[] roads = new Road[fares.length];
+		for(int i=0; i < fares.length; i++) {
+			roads[i] = new Road(fares[i][0], fares[i][1], fares[i][2]);
+		}
+        Arrays.sort(roads, (r1, r2) -> (r1.expense - r2.expense));
         
+        int minDis;
+        for(Road road : roads) {
+        	minDis = Math.min(map[road.start][road.end], road.expense);
+        	map[road.start][road.end] = minDis;
+        	map[road.end][road.start] = minDis;
+        }
+		
         return answer;
     }
 }
-
+class Road {
+	int start;
+	int end;
+	int expense;
+	
+	public Road(int start, int end, int expense) {
+		this.start = start;
+		this.end = end;
+		this.expense = expense;
+	}
+}
 
 
 
