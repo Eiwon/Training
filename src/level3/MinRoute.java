@@ -69,7 +69,6 @@ class Road{
 		if(next.direction == 1) {
 			return false;
 		}else {
-			if(this.direction == 2 && )
 		}
 		
 		return false;

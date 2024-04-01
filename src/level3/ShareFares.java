@@ -32,29 +32,29 @@ public class ShareFares {
 		for(int i=0; i < fares.length; i++) {
 			roads[i] = new Road(fares[i][0], fares[i][1], fares[i][2]);
 		}
-        Arrays.sort(roads, (r1, r2) -> (r1.expense - r2.expense));
-        
-        int minDis;
-        for(Road road : roads) {
-        	minDis = Math.min(map[road.start][road.end], road.expense);
-        	map[road.start][road.end] = minDis;
-        	map[road.end][road.start] = minDis;
-        }
+//        Arrays.sort(roads, (r1, r2) -> (r1.expense - r2.expense));
+//        
+//        int minDis;
+//        for(Road road : roads) {
+//        	minDis = Math.min(map[road.start][road.end], road.expense);
+//        	map[road.start][road.end] = minDis;
+//        	map[road.end][road.start] = minDis;
+//        }
 		
         return answer;
     }
 }
-class Road {
-	int start;
-	int end;
-	int expense;
-	
-	public Road(int start, int end, int expense) {
-		this.start = start;
-		this.end = end;
-		this.expense = expense;
-	}
-}
+//class Road {
+//	int start;
+//	int end;
+//	int expense;
+//	
+//	public Road(int start, int end, int expense) {
+//		this.start = start;
+//		this.end = end;
+//		this.expense = expense;
+//	}
+//}
 
 
 

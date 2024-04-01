@@ -10,29 +10,43 @@ public class BalloonPop {
 	}
 	public static int solution(int[] a) {
         int answer = 0;
-        int n = a.length;
-        int[] nonChanced = new int[n];
-        int[] chanced = new int[n];
-        int nonChancedMin = a[0];
-        
-        for(int i = 1; i < a.length; i++) {
-        	System.out.print(a[i] + ", " + nonChancedMin);
-        	if(a[i] < nonChancedMin) {
-        		nonChanced[i] = nonChanced[i-1] +1;
-        		System.out.println(" " + nonChanced[i]);
-        		chanced[i] = chanced[i-1] +1;
-        		nonChancedMin = Math.min(nonChancedMin, a[i]);
-        	}else {
-        		nonChanced[i] = nonChanced[i-1];
-        		System.out.println(" " + nonChanced[i]);
-        		chanced[i] = 1;
+        int len = a.length;
+        // noChance[n] = noChance[n-1]에서 a[n]보다 큰값 전부 pop, pop을 1회라도 했다면 add a[n]
+        // chance[n] = 위 결과의 pop을 전부 add, noChance에 남은 값이 있다면 add a[n]
+        // 			+  chance[n-1]에서 a[n]보다 큰 값 전부 pop, pop을 1회라도 했다면 add a[n]
+        PriorityQueue<Integer> noChance = new PriorityQueue<>((i1, i2) -> (i2 - i1));
+        PriorityQueue<Integer> chance = new PriorityQueue<>((i1, i2) -> (i2 - i1));
+        noChance.add(Math.min(a[0], a[1]));
+        chance.add(Math.max(a[0], a[1]));
+        boolean chanceAdd = false, noChanceAdd = false;
+        for(int n = 2; n < len; n++) {
+        	// 찬스사용 큐에서 a[n]보다 큰 값은 제거 후 a[n] 추가, 작은 값은 유지  
+        	while(chance.size() > 0 && chance.peek() > a[n]) {
+        		chance.poll();
+        		chanceAdd = true;
         	}
+        	// 찬스 미사용 큐에서 a[n]보다 큰 값은 제거 후 a[n] 추가, 작은 값은 유지
+        	// ㄴ a[n]보다 큰 값이 없다면 찬스 사용 큐에 a[n] 추가 
+        	if(noChance.peek() < a[n]) {
+        		chanceAdd = true;
+        	}else {
+        		noChanceAdd = true;
+        	}
+        	while(noChance.size() > 0 && noChance.peek() > a[n]) {
+        		chance.add(noChance.poll());
+        	}
+        	if(chanceAdd) {
+        		chance.add(a[n]);
+        		chanceAdd = false;
+        	}
+        	if(noChanceAdd) {
+        		noChance.add(a[n]);
+        		noChanceAdd = false;
+        	}
+        	System.out.println("------n = " + n + "--------");
+        	System.out.println(chance.toString());
+        	System.out.println(noChance.toString());
         }
-        System.out.println(nonChanced[n-1] + " " + chanced[n-1]);
-        
-        // dp[n] = dp[n-1] + a[n]이 dp[n-1]의 최소값보다 작은 경우 추가
-        // dp'[n] = dp[n-1] + a[n]이 dp[n-1]의 최소값보다 큰 경우 추가
-        //	or = dp'[n-1] +  a[n]이 dp[n-1]의 최소값보다 작은 경우 추가
         
         //-16,27,65,-2,58,-92,-71,-68,-61,-33
         //0  	1			2			3			4
