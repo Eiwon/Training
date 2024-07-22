@@ -31,5 +31,13 @@
 /Triangle.class
 /Truck.class
 /TruckBridge.class
+<<<<<<< HEAD
 /Defense.class
 /Wave.class
+=======
+/DoubleShortest.class
+/Point.class
+/Rico.class
+/RecoPoint.class
+/Rico$RecoPoint.class
+>>>>>>> de472557a2e7d572cbd1f0ec1bef84180c4f8563
