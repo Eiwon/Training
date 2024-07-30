@@ -1,0 +1,76 @@
+import java.util.*;
+
+class Solution {
+    public String[] solution(String[][] plans) {
+        String[] answer = new String[plans.length];
+        int curTime = 0, answerIdx = 0;
+        Task curTask;
+        // startTime 오름차순 정렬
+        // 대기 Q 따로 생성 : startTime 내림차순 정렬
+    
+        Queue<Task> taskQ = new PriorityQueue<>((Task a1, Task a2) -> {
+            return a1.startTime - a2.startTime;
+        });
+        Queue<Task> stopQ = new PriorityQueue<>((Task a1, Task a2) -> {
+            return a2.startTime - a1.startTime;
+        });
+        
+        for(String[] plan : plans){
+            taskQ.add(new Task(plan));
+        }
+        // task 1개 가지고 시작
+        // 다음 task의 시작시간이 현재 task의 시작시간 + 필요시간보다 크면,  
+        // curTime += playTime, 여유 시간을 저장 후, stopQ에서 여유시간이 0이 될 때까지 playTime 감소시키고, playTime이이 0이면 poll.
+        // 다음 task의 시작시간이 현재 task의 시작시간 + 필요시간보다 작으면, 
+        // (다음 task 시작시간 - 현재 task 시작시간)만큼 현재 task playTime 감소, stopQ에 추가
+        
+        Task nextTask = null;
+        int term = 0;
+        while(taskQ.size() > 0 || stopQ.size() > 0){
+            curTask = taskQ.poll();
+            if(taskQ.size() > 0){
+                nextTask = taskQ.peek();
+                if(nextTask.startTime > curTask.startTime + curTask.playTime){ // 다음 작업 전에 끝날 경우
+                    answer[answerIdx++] = curTask.name;
+                    term = nextTask.startTime - (curTask.startTime + curTask.playTime);
+                    while(term > 0 && stopQ.size() > 0){
+                        int pt = stopQ.peek().playTime;
+                        stopQ.peek().playTime -= term;
+                        term -= pt;
+                        if(stopQ.peek().playTime <= 0){
+                            answer[answerIdx++] = stopQ.poll().name;
+                        }
+                    }
+                }else { // 작업 안끝났는데 다음 작업 시간될 경우
+                    curTask.playTime -= (nextTask.startTime - curTask.startTime);
+                    if(curTask.playTime != 0){
+                        stopQ.add(curTask);
+                    }else {
+                        answer[answerIdx++] = curTask.name;
+                    }
+                }
+            }else {
+                answer[answerIdx++] = curTask.name;
+                while(stopQ.size() > 0){
+                    answer[answerIdx++] = stopQ.poll().name;
+                }
+            }
+        }
+        
+        return answer;
+    }
+}
+
+class Task {
+    String name;
+    int startTime;
+    int playTime;
+    
+    Task(String[] plan){
+        this.name = plan[0];
+        String[] startSplit = plan[1].split(":");
+        this.startTime = Integer.parseInt(startSplit[0]) * 60 + Integer.parseInt(startSplit[1]);
+        this.playTime = Integer.parseInt(plan[2]);
+    }
+    
+}
