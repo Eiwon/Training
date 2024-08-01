@@ -1,0 +1,19 @@
+import java.util.*;
+
+class Solution {
+    public int solution(int[][] targets) {
+        int answer = 0, attPoint = 0;
+        // 1초부터 차례대로 확인
+        // 끝나는 시간이 현재 target보다 늦으면서, 현재 target의 끝보다 빨리 시작하면 다 처리가능
+        Arrays.sort(targets, (t1, t2)-> {return t1[1] - t2[1];});
+        
+        for(int[] target : targets){
+            if(target[0] >= attPoint){
+                answer++;
+                attPoint = target[1];
+            }
+        }
+        
+        return answer;
+    }
+}
