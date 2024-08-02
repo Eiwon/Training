@@ -5,6 +5,8 @@
 		<list key="ImportExportPage.STORE_EXPANDED_IMPORT_CATEGORIES">
 			<item value="org.eclipse.ui.Basic"/>
 		</list>
+		<section name="ImportExportWizard.dialogBounds">
+		</section>
 	</section>
 	<section name="NewWizardAction">
 	</section>
@@ -18,5 +20,7 @@
 		<item key="DIALOG_FONT_NAME" value="1|맑은 고딕|9.0|0|WINDOWS|1|-18|0|0|0|400|0|0|0|1|0|0|0|0|맑은 고딕"/>
 	</section>
 	<section name="FileSystemExportWizard">
+	</section>
+	<section name="WorkbenchPreferenceDialog.dialogBounds">
 	</section>
 </section>
