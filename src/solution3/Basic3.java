@@ -86,5 +86,5 @@ public class Basic3 {
         }
         
         return answer;
-    }()
+    }
 }
