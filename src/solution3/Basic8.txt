@@ -1,0 +1,15 @@
+class Solution {
+    public int solution(int[][] board, int k) {
+        int answer = 0;
+        
+        for(int row = 0; row < board.length; row++){
+            for(int col = 0; col < board[0].length; col++){
+                if(row + col <= k){
+                    answer += board[row][col];
+                }
+            }
+        }
+        
+        return answer;
+    }
+}
