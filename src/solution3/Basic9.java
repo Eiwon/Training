@@ -1,4 +1,5 @@
 package solution3;
+import java.math.BigDecimal;
 import java.util.*;
 
 public class Basic9 {
@@ -397,5 +398,78 @@ public class Basic9 {
         }
         
         return 2;
+    }
+	public int solution23(int[] numbers) {
+        int max1 = 0, max2 = 0;
+        for(int number : numbers){
+            if(number > max1){
+                max2 = max1;
+                max1 = number;
+            }else if(number > max2){
+                max2 = number;
+            }
+        }
+        return max1 * max2;
+    }
+	public int solution24(int n) {
+        int fact = 0, val = 1;
+		while(true) {
+			fact++;
+        	val *= fact;
+        	if(val > n) {
+        		break;
+        	}
+        }
+        return fact - 1;
+    }
+	public int[] solution25(String my_string) {
+        int[] answer = new int[my_string.length()];
+        int answerLen = 0;
+        char p;
+        for(int i = 0; i < my_string.length(); i++) {
+        	p = my_string.charAt(i);
+        	if(Character.isDigit(p)) {
+        		answer[answerLen++] = p - '0';
+        	}
+        }
+        answer = Arrays.copyOfRange(answer, 0, answerLen);
+        Arrays.sort(answer);
+        return answer;
+    }
+	public int solution26(int[] numbers, int k) {
+        return numbers[(k - 1) * 2 % numbers.length];
+    }
+	public int solution27(int balls, int share) {
+        long answer = 1;
+        int[] multiSet = new int[balls - share];
+        int[] divideSet = new int[balls - share];
+        for(int i = share + 1, idx = 0; i <= balls; i++) {
+        	multiSet[idx++] = i;
+        }
+        for(int i = 1, idx = 0; i <= balls - share; i++) {
+        	divideSet[idx++] = i;
+        }
+        
+        for(int d = 0; d < divideSet.length; d++) {
+        	int divideVal = divideSet[d];
+        	for(int m = 0; m < multiSet.length; m++) {
+        		if(multiSet[m] % divideVal == 0) {
+        			multiSet[m] /= divideVal;
+        			divideSet[d] = 1;
+        			break;
+        		}
+        	}
+        }
+        
+        for(int m : multiSet) {
+        	answer *= m;
+        }
+        for(int d : divideSet) {
+        	if(d > 1) {
+        		answer /= d;
+        	}
+        }
+        
+        return (int)answer;
     }
 }
